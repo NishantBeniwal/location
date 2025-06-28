@@ -1,0 +1,38 @@
+<!-- Save this as `friend.html` -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Location Tracker</title>
+</head>
+<body>
+  <h1>Location Sharing Enabled</h1>
+  <p>Latitude: <span id="lat">--</span></p>
+  <p>Longitude: <span id="lon">--</span></p>
+
+  <script>
+    function sendLocation(lat, lon) {
+      fetch('https://your-server.com/save-location', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ latitude: lat, longitude: lon })
+      });
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        document.getElementById('lat').textContent = lat;
+        document.getElementById('lon').textContent = lon;
+
+        sendLocation(lat, lon); // send to your server
+      });
+    } else {
+      alert("Geolocation not supported.");
+    }
+  </script>
+</body>
+</html>
